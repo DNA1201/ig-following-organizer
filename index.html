@@ -39,6 +39,7 @@
       <button class="nav-tab active" data-tab="funnel">1. 漏斗總覽</button>
       <button class="nav-tab" data-tab="focus">2. 極速審核</button>
       <button class="nav-tab" data-tab="list">3. 清單與批次</button>
+      <button class="nav-tab" data-tab="cleanup">4. 退追打勾清單</button>
     </nav>
 
     <!-- Toast Notification -->
@@ -124,7 +125,10 @@
             <p class="muted">
               互追對象通常是現實朋友或熟人。你可以先一鍵將所有「尚未決定且互追」的帳號標為<strong>保留</strong>，瞬間減少一半整理量（隨時可復原或改標）。
             </p>
-            <button id="btnBatchKeepMutual" class="btn btn-keep">✓ 一鍵保留所有未決定的互追帳號</button>
+            <div class="step-actions">
+              <button id="btnBatchKeepMutual" class="btn btn-keep">✓ 一鍵保留互追帳號</button>
+              <button id="btnBatchKeepRecent" class="btn btn-secondary">✓ 一鍵保留近 1 年追蹤</button>
+            </div>
           </div>
 
           <div class="funnel-step">
@@ -307,6 +311,38 @@
           <span id="pageInfo" class="muted">第 1 / 1 頁</span>
           <button id="btnPageNext" class="btn btn-ghost btn-sm">下一頁 →</button>
         </div>
+      </section>
+
+      <!-- View 4: Daily Unfollow Checklist (30 per pack) -->
+      <section id="viewCleanup" class="view-section hidden">
+        <div class="cleanup-header">
+          <div>
+            <h2>每日退追打勾清單（每包 30 筆）</h2>
+            <p class="muted tiny">只顯示「考慮取消」的帳號。點開 IG 手動退追後打勾，建議每天清 1 包（30 筆）最輕鬆且安全。</p>
+          </div>
+          <div class="cleanup-stats">
+            <strong id="cleanupProgressText">已完成 0 / 0</strong>
+          </div>
+        </div>
+
+        <div class="cleanup-toolbar">
+          <div class="cleanup-pack-select">
+            <label for="cleanupPackSelect">選擇分包：</label>
+            <select id="cleanupPackSelect"></select>
+          </div>
+          <label class="checkbox-inline">
+            <input id="chkHideDoneCleanup" type="checkbox" />
+            <span>隱藏已打勾</span>
+          </label>
+        </div>
+
+        <div id="cleanupEmpty" class="empty-state hidden">
+          <div class="empty-icon">✨</div>
+          <h3>目前沒有待退追的帳號！</h3>
+          <p class="muted">在「極速審核」或「清單與批次」將帳號標記為「考慮取消」後，就會自動出現在這裡分包打勾。</p>
+        </div>
+
+        <div id="cleanupList" class="account-list"></div>
       </section>
     </main>
   </div>

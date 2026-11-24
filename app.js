@@ -39,6 +39,7 @@ const els = {
   viewFunnel: $('viewFunnel'),
   viewFocus: $('viewFocus'),
   viewList: $('viewList'),
+  viewCleanup: $('viewCleanup'),
 
   dropZone: $('dropZone'),
   fileInput: $('fileInput'),
@@ -58,6 +59,7 @@ const els = {
   cntUnfollow: $('cntUnfollow'),
   cntLater: $('cntLater'),
   btnBatchKeepMutual: $('btnBatchKeepMutual'),
+  btnBatchKeepRecent: $('btnBatchKeepRecent'),
   btnStartSingleFocus: $('btnStartSingleFocus'),
   btnStartAllFocus: $('btnStartAllFocus'),
   btnFunnelExportExcel: $('btnFunnelExportExcel'),
@@ -99,7 +101,13 @@ const els = {
   listContainer: $('listContainer'),
   btnPagePrev: $('btnPagePrev'),
   btnPageNext: $('btnPageNext'),
-  pageInfo: $('pageInfo')
+  pageInfo: $('pageInfo'),
+
+  cleanupProgressText: $('cleanupProgressText'),
+  cleanupPackSelect: $('cleanupPackSelect'),
+  chkHideDoneCleanup: $('chkHideDoneCleanup'),
+  cleanupEmpty: $('cleanupEmpty'),
+  cleanupList: $('cleanupList')
 };
 
 function showToast(msg) {
@@ -148,6 +156,7 @@ function setTab(tab) {
   els.viewFunnel.classList.toggle('hidden', tab !== 'funnel');
   els.viewFocus.classList.toggle('hidden', tab !== 'focus');
   els.viewList.classList.toggle('hidden', tab !== 'list');
+  els.viewCleanup.classList.toggle('hidden', tab !== 'cleanup');
 
   els.mainNav.classList.toggle('hidden', !hasData || tab === 'import');
   els.headerStats.classList.toggle('hidden', !hasData);
@@ -163,6 +172,7 @@ function setTab(tab) {
     renderFocusCard();
   }
   if (tab === 'list') renderList();
+  if (tab === 'cleanup') renderCleanup();
   renderHeaderProgress();
 }
 
@@ -441,6 +451,75 @@ function updateSelectionUI(pageItems = []) {
   }
 }
 
+const CLEANUP_PACK_SIZE = 30;
+
+function renderCleanup() {
+  if (!state) return;
+  const targets = state.accounts.filter((a) => a.decision === 'unfollow');
+  const total = targets.length;
+  const doneCount = targets.filter((a) => a.unfollowedDone).length;
+  els.cleanupProgressText.textContent = `已退追打勾 ${doneCount} / ${total}`;
+
+  if (total === 0) {
+    els.cleanupEmpty.classList.remove('hidden');
+    els.cleanupList.innerHTML = '';
+    els.cleanupPackSelect.innerHTML = '<option value="0">尚無分包</option>';
+    return;
+  }
+
+  els.cleanupEmpty.classList.add('hidden');
+  const packCount = Math.ceil(total / CLEANUP_PACK_SIZE);
+  const prevPack = Number(els.cleanupPackSelect.value) || 0;
+  const currentPack = Math.min(prevPack, packCount - 1);
+
+  els.cleanupPackSelect.innerHTML = '';
+  for (let i = 0; i < packCount; i++) {
+    const start = i * CLEANUP_PACK_SIZE;
+    const slice = targets.slice(start, start + CLEANUP_PACK_SIZE);
+    const sliceDone = slice.filter((a) => a.unfollowedDone).length;
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = `第 ${i + 1} 包（${start + 1}–${start + slice.length}）— 已完成 ${sliceDone}/${slice.length}`;
+    if (i === currentPack) opt.selected = true;
+    els.cleanupPackSelect.appendChild(opt);
+  }
+
+  const startIdx = currentPack * CLEANUP_PACK_SIZE;
+  let packItems = targets.slice(startIdx, startIdx + CLEANUP_PACK_SIZE);
+  if (els.chkHideDoneCleanup.checked) {
+    packItems = packItems.filter((a) => !a.unfollowedDone);
+  }
+
+  els.cleanupList.innerHTML = '';
+  if (packItems.length === 0) {
+    els.cleanupList.innerHTML = '<div class="empty-state"><p class="muted">這一包已經全部退追打勾完成！可以切到下一包 🎉</p></div>';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  packItems.forEach((acc) => {
+    const row = document.createElement('div');
+    row.className = `account-row ${acc.unfollowedDone ? 'is-done' : ''}`;
+    row.innerHTML = `
+      <div class="account-row-left">
+        <input type="checkbox" class="cleanup-done-chk" data-user="${acc.username}" ${acc.unfollowedDone ? 'checked' : ''} />
+        <div class="account-meta">
+          <div class="account-name-line">
+            <a class="account-link" href="${acc.href}" target="ig_preview">@${acc.username}</a>
+            <span class="badge ${acc.isMutual ? 'badge-mutual' : 'badge-single'}">${acc.isMutual ? '互追' : '單追'}</span>
+          </div>
+          <div class="account-sub">追蹤日期：${formatDate(acc.followedAt)}${acc.note ? '・備註：' + acc.note : ''}</div>
+        </div>
+      </div>
+      <div class="account-row-actions">
+        <button class="btn btn-sm btn-primary btn-open-cleanup-ig" data-href="${acc.href}" data-user="${acc.username}">↗ 開 IG 退追</button>
+      </div>
+    `;
+    frag.appendChild(row);
+  });
+  els.cleanupList.appendChild(frag);
+}
+
 async function handleImportFiles(fileList) {
   try {
     const result = await parseImportedFiles(fileList);
@@ -592,6 +671,35 @@ function bindEvents() {
       return;
     }
     applyDecision(targets, 'keep', 'funnel');
+  });
+
+  els.btnBatchKeepRecent.addEventListener('click', () => {
+    const oneYearAgo = Date.now() - 365 * 24 * 60 * 60 * 1000;
+    const targets = state.accounts.filter(
+      (a) => a.decision === 'undecided' && a.followedAt && a.followedAt >= oneYearAgo
+    );
+    if (targets.length === 0) {
+      showToast('目前沒有「近 1 年內追蹤且尚未決定」的帳號！');
+      return;
+    }
+    applyDecision(targets, 'keep', 'funnel');
+  });
+
+  els.cleanupPackSelect.addEventListener('change', renderCleanup);
+  els.chkHideDoneCleanup.addEventListener('change', renderCleanup);
+  els.cleanupList.addEventListener('change', (e) => {
+    if (e.target.classList.contains('cleanup-done-chk')) {
+      const acc = state.accounts.find((a) => a.username === e.target.dataset.user);
+      if (acc) {
+        acc.unfollowedDone = e.target.checked;
+        persist();
+        renderCleanup();
+      }
+    }
+  });
+  els.cleanupList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-open-cleanup-ig');
+    if (btn) openIgProfile(btn.dataset.href, btn.dataset.user);
   });
 
   els.btnStartSingleFocus.addEventListener('click', () => {
