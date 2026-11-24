@@ -1,0 +1,311 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Instagram 餈質馱?渡??拇?</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <!-- Top Header -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <div>
+          <h1>IG 餈質馱?渡??拇?</h1>
+          <p class="brand-sub">蝝璈?雿?嗅?蝣潦?嗥??/p>
+        </div>
+      </div>
+
+      <div id="headerStats" class="header-progress hidden">
+        <div class="progress-text">
+          <span id="progressLabel">撌脫??0 / 0</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btnUndo" class="btn btn-ghost hidden" title="敺拙?銝?甇?(Z)">??敺拙?</button>
+        <button id="btnOpenImport" class="btn btn-secondary">?臬 / ?遢</button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav id="mainNav" class="nav-tabs hidden" aria-label="銝餉????">
+      <button class="nav-tab active" data-tab="funnel">1. 瞍?蝮質汗</button>
+      <button class="nav-tab" data-tab="focus">2. 璆菟祟??/button>
+      <button class="nav-tab" data-tab="list">3. 皜?甈?/button>
+    </nav>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- View 0: Onboarding / Import -->
+      <section id="viewImport" class="view-section">
+        <div class="import-hero">
+          <h2>?冽?撠???頛??渡?雿? IG 餈質馱?</h2>
+          <p class="muted">
+            ?????100% ?雿??汗?冽璈?IndexedDB嚗?銝?銝?唬遙雿撩?嚗?銝?閬??Instagram??          </p>
+
+          <div id="dropZone" class="drop-zone">
+            <input id="fileInput" type="file" accept=".zip,.json" multiple hidden />
+            <div class="drop-icon">?</div>
+            <h3>????Instagram 摰?臬瑼?/h3>
+            <p class="muted">?舀摰 <code>.zip</code> 憯葬瑼??????<code>following.json</code> + <code>followers_1.json</code></p>
+            <div class="drop-actions">
+              <button id="btnPickFiles" class="btn btn-primary">?豢? ZIP / JSON 瑼?</button>
+              <button id="btnLoadDemo" class="btn btn-secondary">?蝷箇?鞈?擃? (20蝑?</button>
+            </div>
+          </div>
+
+          <div class="restore-bar">
+            <span>??嗡?鋆蔭摮??脣漲嚗?/span>
+            <input id="backupInput" type="file" accept=".json" hidden />
+            <button id="btnRestoreBackup" class="btn btn-ghost">???脣漲?遢 (.json)</button>
+            <button id="btnBackToWorkspace" class="btn btn-ghost hidden">餈??桀??渡??脣漲 ??/button>
+          </div>
+
+          <details class="guide-box">
+            <summary>?? 憒?銝? Instagram 摰 JSON 餈質馱?嚗?蝝?1 ??閮剖?嚗?/summary>
+            <ol>
+              <li>?? IG App ?雯?? ??<strong>閮剖?</strong> ??<strong>撣唾?蝞∠?銝剖?</strong>??/li>
+              <li>暺 <strong>雿?鞈?????/strong> ??<strong>銝?雿?鞈?</strong> ??<strong>銝??宏頧?閮?/strong>??/li>
+              <li>?豢?雿? IG 撣唾? ??暺?<strong>?典?鞈?</strong> ???芸??<strong>餈質馱???蝯莎?Followers and following嚗?/strong>??/li>
+              <li>?交?蝭???<strong>銝???嚗ll time嚗?/strong>嚗撘?敹 <strong>JSON</strong>嚗?閬 HTML嚗?/li>
+              <li>?嗅銝??敺??湔???<code>.zip</code> 瑼??脖??喳嚗?/li>
+            </ol>
+          </details>
+        </div>
+      </section>
+
+      <!-- View 1: Funnel Overview -->
+      <section id="viewFunnel" class="view-section hidden">
+        <div id="demoBanner" class="banner-info hidden">
+          ?桀???strong>?批遣蝷箇?鞈?</strong>??暺銝????/ ?遢?????芸楛??IG 摰?臬瑼?        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">蝮質蕭頩文董??/span>
+            <strong id="statTotal" class="stat-value">0</strong>
+          </div>
+          <div class="stat-card accent-mutual">
+            <span class="stat-label">鈭蕭憟賢?</span>
+            <strong id="statMutual" class="stat-value">0</strong>
+          </div>
+          <div class="stat-card accent-single">
+            <span class="stat-label">?格?Ｚ蕭頩?/span>
+            <strong id="statSingle" class="stat-value">0</strong>
+          </div>
+          <div class="stat-card accent-undecided">
+            <span class="stat-label">撠瘙箏?</span>
+            <strong id="statUndecided" class="stat-value">0</strong>
+          </div>
+        </div>
+
+        <div class="decision-summary-bar">
+          <span class="pill pill-keep">靽? <strong id="cntKeep">0</strong></span>
+          <span class="pill pill-mute">? <strong id="cntMute">0</strong></span>
+          <span class="pill pill-unfollow">??? <strong id="cntUnfollow">0</strong></span>
+          <span class="pill pill-later">蝔??? <strong id="cntLater">0</strong></span>
+        </div>
+
+        <div class="funnel-cards">
+          <div class="funnel-step">
+            <div class="step-badge">甇仿? 1嚗??典翰蝭?/div>
+            <h3>????餈賢末???萎?霅瑁絲靘?/h3>
+            <p class="muted">
+              鈭蕭撠情?虜?舐撖行????犖???臭誑???萄?????芣捱摰?鈭蕭??撣唾?璅<strong>靽?</strong>嚗??撠????嚗?敺拙??璅???            </p>
+            <button id="btnBatchKeepMutual" class="btn btn-keep">??銝?萎????瘙箏???餈賢董??/button>
+          </div>
+
+          <div class="funnel-step">
+            <div class="step-badge">甇仿? 2嚗扔?祟??/div>
+            <h3>?餉銝行??萇瘚?/ ??皛蝎曄祟</h3>
+            <p class="muted">
+              暺???IG???箏??????蝒??餉銝??砍極?瑟撌阡??G ?曉????<code>1/2/3/4</code> 撠梯?????嚗?璈?亙椰?單??～?            </p>
+            <div class="step-actions">
+              <button id="btnStartSingleFocus" class="btn btn-primary">??撖拇??寥餈質馱??</button>
+              <button id="btnStartAllFocus" class="btn btn-secondary">撖拇?券?芣捱摰?/button>
+            </div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="step-badge">甇仿? 3嚗?箄?頝刻?蝵格蝥?/div>
+            <h3>?臬瘙箇??梯”??隞賡脣漲</h3>
+            <p class="muted">
+              ?渡?摰敺??臬?箏 IG ?????Excel / CSV 皜嚗靘蹂??芸楛??IG ????餈質馱???喉?銋?臬 JSON ?遢撣嗅??蝜潛??渡???            </p>
+            <div class="step-actions">
+              <button id="btnFunnelExportExcel" class="btn btn-secondary">?臬 Excel (.xls)</button>
+              <button id="btnFunnelExportCsv" class="btn btn-secondary">?臬 CSV</button>
+              <button id="btnFunnelBackup" class="btn btn-ghost">銝??脣漲?遢 (.json)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-panel">
+          <h3>??靽風????身摰?/h3>
+          <label class="toggle-row">
+            <input id="chkProtectMutual" type="checkbox" checked />
+            <span><strong>鈭蕭?脰炊?芯?霅?/strong>嚗閬???餈賬董???箝????頝喳鈭活蝣箄?</span>
+          </label>
+          <label class="toggle-row">
+            <input id="chkAutoOpenNext" type="checkbox" />
+            <span><strong>?餉銝行???/strong>嚗璆菟祟?詨?瘙箏?敺??芸??澆??IG 閬?頛銝??董????迂?汗?典??箄?蝒?</span>
+          </label>
+          <div class="danger-zone">
+            <button id="btnClearAll" class="btn btn-danger-ghost">皜?祆?鞈?銝阡??圈?憪?/button>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 2: Focus / Swipe Mode -->
+      <section id="viewFocus" class="view-section hidden">
+        <div class="focus-toolbar">
+          <div class="focus-queue-select">
+            <label for="focusQueueFilter">撖拇雿?嚗?/label>
+            <select id="focusQueueFilter">
+              <option value="undecided_single">?芣捱摰??格?Ｚ蕭頩文??</option>
+              <option value="undecided_all">??瘙箏?</option>
+              <option value="later">蝔???</option>
+              <option value="unfollow">銴嚗??</option>
+              <option value="all">?券撣唾?</option>
+            </select>
+          </div>
+          <div class="focus-counter" id="focusCounter">0 / 0</div>
+        </div>
+
+        <div id="focusEmpty" class="empty-state hidden">
+          <div class="empty-icon">??</div>
+          <h3>???歇蝬?典祟?詨??ｇ?</h3>
+          <p class="muted">雿隞亙????嫣???靘?銴??敺????????嚗??????株??寞活??箇???/p>
+          <button id="btnFocusGoList" class="btn btn-primary">??皜???/button>
+        </div>
+
+        <div id="focusStage" class="focus-stage">
+          <div id="swipeCard" class="swipe-card">
+            <div class="swipe-indicator" id="swipeIndicator"></div>
+
+            <div class="card-top">
+              <span id="cardRelBadge" class="badge">?格?Ｚ蕭頩?/span>
+              <span id="cardCurrentDecision" class="badge badge-neutral">?芣捱摰?/span>
+            </div>
+
+            <div class="card-identity">
+              <div id="cardAvatar" class="avatar-circle">A</div>
+              <h2 id="cardUsername">@username</h2>
+              <p id="cardFollowedAt" class="muted">餈質馱?交?嚗?-</p>
+            </div>
+
+            <div id="cardHints" class="hints-row"></div>
+            <p class="honest-disclaimer">
+              ??璅惜?? IG ?臬瑼?鈭蕭??蕭頩斗???撣唾?摮?孵噩?Ｙ?嚗?銝?皜祉?鈭粹?靽??閎??            </p>
+
+            <div class="card-open-ig">
+              <button id="btnOpenIgProfile" class="btn btn-ig">
+                ???? IG ?犖? <span class="kbd">Space</span>
+              </button>
+              <p class="muted tiny">?餉撱箄降嚗?甇方?蝒撌血???暺????典摰?蝒???IG嚗???????/p>
+            </div>
+
+            <div class="card-note-box">
+              <input id="cardNoteInput" type="text" placeholder="?詨‵?酉嚗?憒?憭批飛?飛??霈?蝘??萎???..嚗? />
+            </div>
+          </div>
+
+          <!-- 4 Primary Decision Buttons -->
+          <div class="decision-actions">
+            <button class="btn-decision btn-keep" data-decision="keep">
+              <span class="dec-title">??靽?</span>
+              <span class="kbd">1 / ?單?</span>
+            </button>
+            <button class="btn-decision btn-mute" data-decision="mute">
+              <span class="dec-title">?? ?</span>
+              <span class="kbd">2 / 銝?</span>
+            </button>
+            <button class="btn-decision btn-unfollow" data-decision="unfollow">
+              <span class="dec-title">?????</span>
+              <span class="kbd">3 / 撌行?</span>
+            </button>
+            <button class="btn-decision btn-later" data-decision="later">
+              <span class="dec-title">??蝔???</span>
+              <span class="kbd">4 / 銝?</span>
+            </button>
+          </div>
+
+          <div class="focus-nav-row">
+            <button id="btnFocusPrev" class="btn btn-ghost">??銝???/button>
+            <span class="muted tiny desktop-only">敹急?蛛?1靽??????????蝔??艋pace?G?蒲敺拙?</span>
+            <button id="btnFocusNext" class="btn btn-ghost">頝喲?銝?????/button>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 3: List & Batch Management -->
+      <section id="viewList" class="view-section hidden">
+        <div class="list-filters">
+          <input id="searchInput" type="search" placeholder="??撣唾??迂??閮餅??孵噩璅惜..." />
+          <select id="filterDecision">
+            <option value="all">?券瘙箏?</option>
+            <option value="undecided">?芣捱摰?/option>
+            <option value="keep">靽?</option>
+            <option value="mute">?</option>
+            <option value="unfollow">???</option>
+            <option value="later">蝔???</option>
+          </select>
+          <select id="filterRelation">
+            <option value="all">?券??</option>
+            <option value="mutual">鈭蕭</option>
+            <option value="single">?格?Ｚ蕭頩?/option>
+          </select>
+          <select id="filterSort">
+            <option value="oldest">餈質馱?銋??/option>
+            <option value="newest">??啗蕭頩文??/option>
+            <option value="alpha">撣唾? A ??Z</option>
+          </select>
+        </div>
+
+        <div class="batch-bar">
+          <div class="batch-left">
+            <label class="checkbox-inline">
+              <input id="chkSelectAllPage" type="checkbox" />
+              <span>?券?祇?</span>
+            </label>
+            <button id="btnSelectAllFiltered" class="btn btn-ghost btn-sm">?券蝚血?蝭拚 (<span id="filteredCount">0</span>)</button>
+            <span id="selectedCountBadge" class="selected-badge hidden">撌脤 0 蝑?/span>
+          </div>
+
+          <div class="batch-right">
+            <div id="batchActions" class="batch-actions hidden">
+              <button class="btn btn-sm btn-keep" data-batch="keep">璅靽?</button>
+              <button class="btn btn-sm btn-mute" data-batch="mute">璅?</button>
+              <button class="btn btn-sm btn-unfollow" data-batch="unfollow">璅???</button>
+              <button class="btn btn-sm btn-later" data-batch="later">璅蝔?</button>
+            </div>
+            <div class="export-actions">
+              <button id="btnListExportExcel" class="btn btn-sm btn-secondary">?臬蝭拚 Excel</button>
+              <button id="btnListExportCsv" class="btn btn-sm btn-secondary">?臬蝭拚 CSV</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="listContainer" class="account-list"></div>
+
+        <div id="paginationBar" class="pagination-bar">
+          <button id="btnPagePrev" class="btn btn-ghost btn-sm">??銝???/button>
+          <span id="pageInfo" class="muted">蝚?1 / 1 ??/span>
+          <button id="btnPageNext" class="btn btn-ghost btn-sm">銝?????/button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
+
