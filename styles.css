@@ -512,9 +512,72 @@ select:focus, input:focus {
   border-color: var(--primary);
 }
 
+.focus-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .focus-counter {
   font-weight: 700;
   color: var(--muted);
+}
+
+/* Compact Mode for Mobile Split-Screen */
+.view-compact .avatar-circle,
+.view-compact .honest-disclaimer,
+.view-compact .card-note-box,
+.view-compact .card-open-ig .tiny,
+.view-compact .focus-nav-row {
+  display: none !important;
+}
+
+.view-compact .swipe-card {
+  padding: 12px 14px;
+  border-radius: 14px;
+}
+
+.view-compact .card-top {
+  margin-bottom: 6px;
+}
+
+.view-compact .card-identity {
+  margin-bottom: 8px;
+}
+
+.view-compact .card-identity h2 {
+  font-size: 1.15rem;
+}
+
+.view-compact .hints-row {
+  margin-bottom: 8px;
+}
+
+.view-compact .card-open-ig {
+  margin-bottom: 0;
+}
+
+.view-compact .btn-ig {
+  padding: 9px 12px;
+  font-size: 0.9rem;
+}
+
+.view-compact .decision-actions {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.view-compact .btn-decision {
+  padding: 9px 4px;
+}
+
+.view-compact .btn-decision .kbd {
+  display: none;
+}
+
+.view-compact .dec-title {
+  font-size: 0.8rem;
 }
 
 .focus-stage {

@@ -70,6 +70,7 @@ const els = {
   btnClearAll: $('btnClearAll'),
 
   focusQueueFilter: $('focusQueueFilter'),
+  btnCompactMode: $('btnCompactMode'),
   focusCounter: $('focusCounter'),
   focusEmpty: $('focusEmpty'),
   focusStage: $('focusStage'),
@@ -739,6 +740,12 @@ function bindEvents() {
   els.focusQueueFilter.addEventListener('change', () => {
     rebuildFocusQueue(true);
     renderFocusCard();
+  });
+
+  els.btnCompactMode.addEventListener('click', () => {
+    const isCompact = els.viewFocus.classList.toggle('view-compact');
+    els.btnCompactMode.textContent = isCompact ? '📱 完整模式' : '📱 精簡模式';
+    showToast(isCompact ? '已切換為手機分割畫面精簡模式' : '已切換回完整卡片模式');
   });
 
   els.btnFocusGoList.addEventListener('click', () => setTab('list'));
