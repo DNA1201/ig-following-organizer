@@ -9,14 +9,19 @@
   4. **保護原始資料與防誤刪**：原始匯出資料唯讀保存；互追好友預設保護（可一鍵保留，移至考慮取消需二次確認）。
 
 ## 2. 技術架構（v1.0）
-- **純前端零建置（Vanilla HTML / CSS / ES Modules）**：無需 Node.js 或後端伺服器，直接開啟或透過 GitHub Pages 即可於電腦與手機使用。
+- **純前端零建置（Vanilla HTML / CSS / ES Modules）**：無需 Node.js 或後端伺服器，透過本機靜態伺服器或 GitHub Pages 即可在電腦與手機使用。
 - **模組職責**：
-  - `js/zip-reader.js`：免依賴瀏覽器原生 `DecompressionStream('deflate-raw')` ZIP 解析器。
-  - `js/ig-parser.js`：支援官方 `following.json` 與多個 `followers_*.json` 解析與互追比對。
-  - `js/storage.js`：`IndexedDB` 持久化層（支援 2,000+ 筆資料流暢存取）。
-  - `js/exporter.js`：UTF-8 BOM `.csv`、Excel `.xls`（含可點擊 IG 超連結）與跨裝置 `.json` 進度備份。
-  - `js/app.js`：漏斗總覽、極速審核（單一重用視窗 `ig_preview` + 鍵盤快捷鍵 + 手機滑卡）、清單批次管理與復原堆疊。
+  - `zip-reader.js`：免依賴瀏覽器原生 `DecompressionStream('deflate-raw')` ZIP 解析器。
+  - `ig-parser.js`：支援官方 `following.json` 與多個 `followers_*.json` 解析與互追比對。
+  - `storage.js`：`IndexedDB` 持久化層（支援 2,000+ 筆資料流暢存取）。
+  - `exporter.js`：UTF-8 BOM `.csv`、Excel `.xls`（含可點擊 IG 超連結）與跨裝置 `.json` 進度備份。
+  - `app.js`：漏斗總覽、極速審核（單一重用視窗 `ig_preview` + 鍵盤快捷鍵 + 手機滑卡）、清單批次管理、復原堆疊及退追打勾清單。
 
 ## 3. 安全與去敏規範
-- `.gitignore` 已強制排除所有 `*.zip`、`following*.json`、`followers*.json`、`ig-organizer-backup*.json`、`*.csv`、`*.xls`。
+- 本機開發副本有 `.gitignore` 保護匯出檔。GitHub `main` 目前沒有此檔，上傳前應只選取程式碼、去敏示範資料與文件。
 - 記憶檔與測試資料嚴禁寫入任何真實 IG 帳號或個人資料。
+
+## 4. 退追打勾清單
+- 「考慮取消」是整理決定，實際退追完成由清單核取方塊另行記錄。每包 30 筆是介面分頁大小。
+- 在 IG 以完整帳號名稱核對目標。網址無法使用或沒有完全相符的結果時，保留為未確認。私人帳號退追後可能需要重新申請，先讓使用者查看個人頁並自行選擇。
+- IG 上的變更與本機打勾進度各自保存。核對 IG 狀態後，可在整理助手勾選完成並匯出更新的本機備份。
