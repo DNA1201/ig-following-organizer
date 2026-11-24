@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Instagram 餈質馱?渡??拇?</title>
+  <title>Instagram 追蹤整理助手</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -13,14 +13,14 @@
       <div class="brand">
         <span class="brand-dot"></span>
         <div>
-          <h1>IG 餈質馱?渡??拇?</h1>
-          <p class="brand-sub">蝝璈?雿?嗅?蝣潦?嗥??/p>
+          <h1>IG 追蹤整理助手</h1>
+          <p class="brand-sub">純本機運作・零密碼・零爬蟲</p>
         </div>
       </div>
 
       <div id="headerStats" class="header-progress hidden">
         <div class="progress-text">
-          <span id="progressLabel">撌脫??0 / 0</span>
+          <span id="progressLabel">已整理 0 / 0</span>
           <span id="progressPercent">0%</span>
         </div>
         <div class="progress-track">
@@ -29,16 +29,16 @@
       </div>
 
       <div class="header-actions">
-        <button id="btnUndo" class="btn btn-ghost hidden" title="敺拙?銝?甇?(Z)">??敺拙?</button>
-        <button id="btnOpenImport" class="btn btn-secondary">?臬 / ?遢</button>
+        <button id="btnUndo" class="btn btn-ghost hidden" title="復原上一步 (Z)">↩ 復原</button>
+        <button id="btnOpenImport" class="btn btn-secondary">匯入 / 備份</button>
       </div>
     </header>
 
     <!-- Navigation Tabs -->
-    <nav id="mainNav" class="nav-tabs hidden" aria-label="銝餉????">
-      <button class="nav-tab active" data-tab="funnel">1. 瞍?蝮質汗</button>
-      <button class="nav-tab" data-tab="focus">2. 璆菟祟??/button>
-      <button class="nav-tab" data-tab="list">3. 皜?甈?/button>
+    <nav id="mainNav" class="nav-tabs hidden" aria-label="主要功能切換">
+      <button class="nav-tab active" data-tab="funnel">1. 漏斗總覽</button>
+      <button class="nav-tab" data-tab="focus">2. 極速審核</button>
+      <button class="nav-tab" data-tab="list">3. 清單與批次</button>
     </nav>
 
     <!-- Toast Notification -->
@@ -49,36 +49,37 @@
       <!-- View 0: Onboarding / Import -->
       <section id="viewImport" class="view-section">
         <div class="import-hero">
-          <h2>?冽?撠???頛??渡?雿? IG 餈質馱?</h2>
+          <h2>用最少點擊，輕鬆整理你的 IG 追蹤名單</h2>
           <p class="muted">
-            ?????100% ?雿??汗?冽璈?IndexedDB嚗?銝?銝?唬遙雿撩?嚗?銝?閬??Instagram??          </p>
+            所有資料 100% 留在你的瀏覽器本機（IndexedDB），不會上傳到任何伺服器，也不需要登入 Instagram。
+          </p>
 
           <div id="dropZone" class="drop-zone">
             <input id="fileInput" type="file" accept=".zip,.json" multiple hidden />
-            <div class="drop-icon">?</div>
-            <h3>????Instagram 摰?臬瑼?/h3>
-            <p class="muted">?舀摰 <code>.zip</code> 憯葬瑼??????<code>following.json</code> + <code>followers_1.json</code></p>
+            <div class="drop-icon">📦</div>
+            <h3>拖曳或選擇 Instagram 官方匯出檔</h3>
+            <p class="muted">支援完整 <code>.zip</code> 壓縮檔，或同時選取 <code>following.json</code> + <code>followers_1.json</code></p>
             <div class="drop-actions">
-              <button id="btnPickFiles" class="btn btn-primary">?豢? ZIP / JSON 瑼?</button>
-              <button id="btnLoadDemo" class="btn btn-secondary">?蝷箇?鞈?擃? (20蝑?</button>
+              <button id="btnPickFiles" class="btn btn-primary">選擇 ZIP / JSON 檔案</button>
+              <button id="btnLoadDemo" class="btn btn-secondary">先用示範資料體驗 (20筆)</button>
             </div>
           </div>
 
           <div class="restore-bar">
-            <span>??嗡?鋆蔭摮??脣漲嚗?/span>
+            <span>有在其他裝置存過進度？</span>
             <input id="backupInput" type="file" accept=".json" hidden />
-            <button id="btnRestoreBackup" class="btn btn-ghost">???脣漲?遢 (.json)</button>
-            <button id="btnBackToWorkspace" class="btn btn-ghost hidden">餈??桀??渡??脣漲 ??/button>
+            <button id="btnRestoreBackup" class="btn btn-ghost">還原進度備份 (.json)</button>
+            <button id="btnBackToWorkspace" class="btn btn-ghost hidden">返回目前整理進度 →</button>
           </div>
 
           <details class="guide-box">
-            <summary>?? 憒?銝? Instagram 摰 JSON 餈質馱?嚗?蝝?1 ??閮剖?嚗?/summary>
+            <summary>📖 如何下載 Instagram 官方 JSON 追蹤名單？（約 1 分鐘設定）</summary>
             <ol>
-              <li>?? IG App ?雯?? ??<strong>閮剖?</strong> ??<strong>撣唾?蝞∠?銝剖?</strong>??/li>
-              <li>暺 <strong>雿?鞈?????/strong> ??<strong>銝?雿?鞈?</strong> ??<strong>銝??宏頧?閮?/strong>??/li>
-              <li>?豢?雿? IG 撣唾? ??暺?<strong>?典?鞈?</strong> ???芸??<strong>餈質馱???蝯莎?Followers and following嚗?/strong>??/li>
-              <li>?交?蝭???<strong>銝???嚗ll time嚗?/strong>嚗撘?敹 <strong>JSON</strong>嚗?閬 HTML嚗?/li>
-              <li>?嗅銝??敺??湔???<code>.zip</code> 瑼??脖??喳嚗?/li>
+              <li>開啟 IG App 或網頁版 → <strong>設定</strong> → <strong>帳號管理中心</strong>。</li>
+              <li>點選 <strong>你的資訊和權限</strong> → <strong>下載你的資訊</strong> → <strong>下載或移轉資訊</strong>。</li>
+              <li>選擇你的 IG 帳號 → 點 <strong>部分資訊</strong> → 只勾選 <strong>追蹤名單和粉絲（Followers and following）</strong>。</li>
+              <li>日期範圍選 <strong>不限時間（All time）</strong>，格式務必選 <strong>JSON</strong>（不要選 HTML）。</li>
+              <li>收到下載通知後，直接把整個 <code>.zip</code> 檔拖進來即可！</li>
             </ol>
           </details>
         </div>
@@ -87,79 +88,83 @@
       <!-- View 1: Funnel Overview -->
       <section id="viewFunnel" class="view-section hidden">
         <div id="demoBanner" class="banner-info hidden">
-          ?桀???strong>?批遣蝷箇?鞈?</strong>??暺銝????/ ?遢?????芸楛??IG 摰?臬瑼?        </div>
+          目前為<strong>內建示範資料</strong>。隨時可點右上角「匯入 / 備份」換成你自己的 IG 官方匯出檔。
+        </div>
 
         <div class="stats-grid">
           <div class="stat-card">
-            <span class="stat-label">蝮質蕭頩文董??/span>
+            <span class="stat-label">總追蹤帳號</span>
             <strong id="statTotal" class="stat-value">0</strong>
           </div>
           <div class="stat-card accent-mutual">
-            <span class="stat-label">鈭蕭憟賢?</span>
+            <span class="stat-label">互追好友</span>
             <strong id="statMutual" class="stat-value">0</strong>
           </div>
           <div class="stat-card accent-single">
-            <span class="stat-label">?格?Ｚ蕭頩?/span>
+            <span class="stat-label">單方面追蹤</span>
             <strong id="statSingle" class="stat-value">0</strong>
           </div>
           <div class="stat-card accent-undecided">
-            <span class="stat-label">撠瘙箏?</span>
+            <span class="stat-label">尚未決定</span>
             <strong id="statUndecided" class="stat-value">0</strong>
           </div>
         </div>
 
         <div class="decision-summary-bar">
-          <span class="pill pill-keep">靽? <strong id="cntKeep">0</strong></span>
-          <span class="pill pill-mute">? <strong id="cntMute">0</strong></span>
-          <span class="pill pill-unfollow">??? <strong id="cntUnfollow">0</strong></span>
-          <span class="pill pill-later">蝔??? <strong id="cntLater">0</strong></span>
+          <span class="pill pill-keep">保留 <strong id="cntKeep">0</strong></span>
+          <span class="pill pill-mute">靜音 <strong id="cntMute">0</strong></span>
+          <span class="pill pill-unfollow">考慮取消 <strong id="cntUnfollow">0</strong></span>
+          <span class="pill pill-later">稍後再看 <strong id="cntLater">0</strong></span>
         </div>
 
         <div class="funnel-cards">
           <div class="funnel-step">
-            <div class="step-badge">甇仿? 1嚗??典翰蝭?/div>
-            <h3>????餈賢末???萎?霅瑁絲靘?/h3>
+            <div class="step-badge">步驟 1：安全快篩</div>
+            <h3>先把「互追好友」一鍵保護起來</h3>
             <p class="muted">
-              鈭蕭撠情?虜?舐撖行????犖???臭誑???萄?????芣捱摰?鈭蕭??撣唾?璅<strong>靽?</strong>嚗??撠????嚗?敺拙??璅???            </p>
-            <button id="btnBatchKeepMutual" class="btn btn-keep">??銝?萎????瘙箏???餈賢董??/button>
+              互追對象通常是現實朋友或熟人。你可以先一鍵將所有「尚未決定且互追」的帳號標為<strong>保留</strong>，瞬間減少一半整理量（隨時可復原或改標）。
+            </p>
+            <button id="btnBatchKeepMutual" class="btn btn-keep">✓ 一鍵保留所有未決定的互追帳號</button>
           </div>
 
           <div class="funnel-step">
-            <div class="step-badge">甇仿? 2嚗扔?祟??/div>
-            <h3>?餉銝行??萇瘚?/ ??皛蝎曄祟</h3>
+            <div class="step-badge">步驟 2：極速審核</div>
+            <h3>電腦並排鍵盤流 / 手機滑卡精篩</h3>
             <p class="muted">
-              暺???IG???箏??????蝒??餉銝??砍極?瑟撌阡??G ?曉????<code>1/2/3/4</code> 撠梯?????嚗?璈?亙椰?單??～?            </p>
+              點「開啟 IG」會固定重用同一個視窗，電腦上把本工具放左邊、IG 放右邊，按 <code>1/2/3/4</code> 就能連續處理；手機直接左右滑卡。
+            </p>
             <div class="step-actions">
-              <button id="btnStartSingleFocus" class="btn btn-primary">??撖拇??寥餈質馱??</button>
-              <button id="btnStartAllFocus" class="btn btn-secondary">撖拇?券?芣捱摰?/button>
+              <button id="btnStartSingleFocus" class="btn btn-primary">開始審核「單方面追蹤」→</button>
+              <button id="btnStartAllFocus" class="btn btn-secondary">審核全部未決定</button>
             </div>
           </div>
 
           <div class="funnel-step">
-            <div class="step-badge">甇仿? 3嚗?箄?頝刻?蝵格蝥?/div>
-            <h3>?臬瘙箇??梯”??隞賡脣漲</h3>
+            <div class="step-badge">步驟 3：匯出與跨裝置接續</div>
+            <h3>匯出決策報表或備份進度</h3>
             <p class="muted">
-              ?渡?摰敺??臬?箏 IG ?????Excel / CSV 皜嚗靘蹂??芸楛??IG ????餈質馱???喉?銋?臬 JSON ?遢撣嗅??蝜潛??渡???            </p>
+              整理完畢後，可匯出含 IG 連結的 Excel / CSV 清單，方便你自己回 IG 手動取消追蹤或靜音；也可匯出 JSON 備份帶去手機繼續整理。
+            </p>
             <div class="step-actions">
-              <button id="btnFunnelExportExcel" class="btn btn-secondary">?臬 Excel (.xls)</button>
-              <button id="btnFunnelExportCsv" class="btn btn-secondary">?臬 CSV</button>
-              <button id="btnFunnelBackup" class="btn btn-ghost">銝??脣漲?遢 (.json)</button>
+              <button id="btnFunnelExportExcel" class="btn btn-secondary">匯出 Excel (.xls)</button>
+              <button id="btnFunnelExportCsv" class="btn btn-secondary">匯出 CSV</button>
+              <button id="btnFunnelBackup" class="btn btn-ghost">下載進度備份 (.json)</button>
             </div>
           </div>
         </div>
 
         <div class="settings-panel">
-          <h3>??靽風????身摰?/h3>
+          <h3>操作保護與習慣設定</h3>
           <label class="toggle-row">
             <input id="chkProtectMutual" type="checkbox" checked />
-            <span><strong>鈭蕭?脰炊?芯?霅?/strong>嚗閬???餈賬董???箝????頝喳鈭活蝣箄?</span>
+            <span><strong>互追防誤刪保護</strong>：若要將「互追」帳號標為「考慮取消」，跳出二次確認</span>
           </label>
           <label class="toggle-row">
             <input id="chkAutoOpenNext" type="checkbox" />
-            <span><strong>?餉銝行???/strong>嚗璆菟祟?詨?瘙箏?敺??芸??澆??IG 閬?頛銝??董????迂?汗?典??箄?蝒?</span>
+            <span><strong>電腦並排加速</strong>：在極速審核做決定後，自動於右側 IG 視窗載入下一個帳號（需允許瀏覽器彈出視窗）</span>
           </label>
           <div class="danger-zone">
-            <button id="btnClearAll" class="btn btn-danger-ghost">皜?祆?鞈?銝阡??圈?憪?/button>
+            <button id="btnClearAll" class="btn btn-danger-ghost">清除本機資料並重新開始</button>
           </div>
         </div>
       </section>
@@ -168,23 +173,23 @@
       <section id="viewFocus" class="view-section hidden">
         <div class="focus-toolbar">
           <div class="focus-queue-select">
-            <label for="focusQueueFilter">撖拇雿?嚗?/label>
+            <label for="focusQueueFilter">審核佇列：</label>
             <select id="focusQueueFilter">
-              <option value="undecided_single">?芣捱摰??格?Ｚ蕭頩文??</option>
-              <option value="undecided_all">??瘙箏?</option>
-              <option value="later">蝔???</option>
-              <option value="unfollow">銴嚗??</option>
-              <option value="all">?券撣唾?</option>
+              <option value="undecided_single">未決定（單方面追蹤優先）</option>
+              <option value="undecided_all">所有未決定</option>
+              <option value="later">稍後再看</option>
+              <option value="unfollow">複查：考慮取消</option>
+              <option value="all">全部帳號</option>
             </select>
           </div>
           <div class="focus-counter" id="focusCounter">0 / 0</div>
         </div>
 
         <div id="focusEmpty" class="empty-state hidden">
-          <div class="empty-icon">??</div>
-          <h3>???歇蝬?典祟?詨??ｇ?</h3>
-          <p class="muted">雿隞亙????嫣???靘?銴??敺????????嚗??????株??寞活??箇???/p>
-          <button id="btnFocusGoList" class="btn btn-primary">??皜???/button>
+          <div class="empty-icon">🎉</div>
+          <h3>這個佇列已經全部審核完畢！</h3>
+          <p class="muted">你可以切換上方佇列（例如複查「稍後再看」或「考慮取消」），或前往「清單與批次」匯出結果。</p>
+          <button id="btnFocusGoList" class="btn btn-primary">前往清單與匯出</button>
         </div>
 
         <div id="focusStage" class="focus-stage">
@@ -192,56 +197,57 @@
             <div class="swipe-indicator" id="swipeIndicator"></div>
 
             <div class="card-top">
-              <span id="cardRelBadge" class="badge">?格?Ｚ蕭頩?/span>
-              <span id="cardCurrentDecision" class="badge badge-neutral">?芣捱摰?/span>
+              <span id="cardRelBadge" class="badge">單方面追蹤</span>
+              <span id="cardCurrentDecision" class="badge badge-neutral">未決定</span>
             </div>
 
             <div class="card-identity">
               <div id="cardAvatar" class="avatar-circle">A</div>
               <h2 id="cardUsername">@username</h2>
-              <p id="cardFollowedAt" class="muted">餈質馱?交?嚗?-</p>
+              <p id="cardFollowedAt" class="muted">追蹤日期：--</p>
             </div>
 
             <div id="cardHints" class="hints-row"></div>
             <p class="honest-disclaimer">
-              ??璅惜?? IG ?臬瑼?鈭蕭??蕭頩斗???撣唾?摮?孵噩?Ｙ?嚗?銝?皜祉?鈭粹?靽??閎??            </p>
+              ※ 標籤僅依 IG 匯出檔之互追狀態、追蹤時間與帳號字面特徵產生，絕不猜測私人關係或興趣。
+            </p>
 
             <div class="card-open-ig">
               <button id="btnOpenIgProfile" class="btn btn-ig">
-                ???? IG ?犖? <span class="kbd">Space</span>
+                ↗ 開啟 IG 個人頁面 <span class="kbd">Space</span>
               </button>
-              <p class="muted tiny">?餉撱箄降嚗?甇方?蝒撌血???暺????典摰?蝒???IG嚗???????/p>
+              <p class="muted tiny">電腦建議：將此視窗放左半邊，點按鈕會在固定視窗開啟 IG，不開一堆分頁。</p>
             </div>
 
             <div class="card-note-box">
-              <input id="cardNoteInput" type="text" placeholder="?詨‵?酉嚗?憒?憭批飛?飛??霈?蝘??萎???..嚗? />
+              <input id="cardNoteInput" type="text" placeholder="選填備註（例如：大學同學、很讚的科技創作者...）" />
             </div>
           </div>
 
           <!-- 4 Primary Decision Buttons -->
           <div class="decision-actions">
             <button class="btn-decision btn-keep" data-decision="keep">
-              <span class="dec-title">??靽?</span>
-              <span class="kbd">1 / ?單?</span>
+              <span class="dec-title">✓ 保留</span>
+              <span class="kbd">1 / 右滑</span>
             </button>
             <button class="btn-decision btn-mute" data-decision="mute">
-              <span class="dec-title">?? ?</span>
-              <span class="kbd">2 / 銝?</span>
+              <span class="dec-title">🔇 靜音</span>
+              <span class="kbd">2 / 上滑</span>
             </button>
             <button class="btn-decision btn-unfollow" data-decision="unfollow">
-              <span class="dec-title">?????</span>
-              <span class="kbd">3 / 撌行?</span>
+              <span class="dec-title">✕ 考慮取消</span>
+              <span class="kbd">3 / 左滑</span>
             </button>
             <button class="btn-decision btn-later" data-decision="later">
-              <span class="dec-title">??蝔???</span>
-              <span class="kbd">4 / 銝?</span>
+              <span class="dec-title">⏳ 稍後再看</span>
+              <span class="kbd">4 / 下滑</span>
             </button>
           </div>
 
           <div class="focus-nav-row">
-            <button id="btnFocusPrev" class="btn btn-ghost">??銝???/button>
-            <span class="muted tiny desktop-only">敹急?蛛?1靽??????????蝔??艋pace?G?蒲敺拙?</span>
-            <button id="btnFocusNext" class="btn btn-ghost">頝喲?銝?????/button>
+            <button id="btnFocusPrev" class="btn btn-ghost">← 上一個</button>
+            <span class="muted tiny desktop-only">快捷鍵：1保留・2靜音・3取消・4稍後・Space開IG・Z復原</span>
+            <button id="btnFocusNext" class="btn btn-ghost">跳過下一個 →</button>
           </div>
         </div>
       </section>
@@ -249,24 +255,24 @@
       <!-- View 3: List & Batch Management -->
       <section id="viewList" class="view-section hidden">
         <div class="list-filters">
-          <input id="searchInput" type="search" placeholder="??撣唾??迂??閮餅??孵噩璅惜..." />
+          <input id="searchInput" type="search" placeholder="搜尋帳號名稱、備註或特徵標籤..." />
           <select id="filterDecision">
-            <option value="all">?券瘙箏?</option>
-            <option value="undecided">?芣捱摰?/option>
-            <option value="keep">靽?</option>
-            <option value="mute">?</option>
-            <option value="unfollow">???</option>
-            <option value="later">蝔???</option>
+            <option value="all">全部決定</option>
+            <option value="undecided">未決定</option>
+            <option value="keep">保留</option>
+            <option value="mute">靜音</option>
+            <option value="unfollow">考慮取消</option>
+            <option value="later">稍後再看</option>
           </select>
           <select id="filterRelation">
-            <option value="all">?券??</option>
-            <option value="mutual">鈭蕭</option>
-            <option value="single">?格?Ｚ蕭頩?/option>
+            <option value="all">全部關係</option>
+            <option value="mutual">互追</option>
+            <option value="single">單方面追蹤</option>
           </select>
           <select id="filterSort">
-            <option value="oldest">餈質馱?銋??/option>
-            <option value="newest">??啗蕭頩文??/option>
-            <option value="alpha">撣唾? A ??Z</option>
+            <option value="oldest">追蹤最久優先</option>
+            <option value="newest">最新追蹤優先</option>
+            <option value="alpha">帳號 A → Z</option>
           </select>
         </div>
 
@@ -274,22 +280,22 @@
           <div class="batch-left">
             <label class="checkbox-inline">
               <input id="chkSelectAllPage" type="checkbox" />
-              <span>?券?祇?</span>
+              <span>全選本頁</span>
             </label>
-            <button id="btnSelectAllFiltered" class="btn btn-ghost btn-sm">?券蝚血?蝭拚 (<span id="filteredCount">0</span>)</button>
-            <span id="selectedCountBadge" class="selected-badge hidden">撌脤 0 蝑?/span>
+            <button id="btnSelectAllFiltered" class="btn btn-ghost btn-sm">全選符合篩選 (<span id="filteredCount">0</span>)</button>
+            <span id="selectedCountBadge" class="selected-badge hidden">已選 0 筆</span>
           </div>
 
           <div class="batch-right">
             <div id="batchActions" class="batch-actions hidden">
-              <button class="btn btn-sm btn-keep" data-batch="keep">璅靽?</button>
-              <button class="btn btn-sm btn-mute" data-batch="mute">璅?</button>
-              <button class="btn btn-sm btn-unfollow" data-batch="unfollow">璅???</button>
-              <button class="btn btn-sm btn-later" data-batch="later">璅蝔?</button>
+              <button class="btn btn-sm btn-keep" data-batch="keep">標為保留</button>
+              <button class="btn btn-sm btn-mute" data-batch="mute">標為靜音</button>
+              <button class="btn btn-sm btn-unfollow" data-batch="unfollow">標為考慮取消</button>
+              <button class="btn btn-sm btn-later" data-batch="later">標為稍後</button>
             </div>
             <div class="export-actions">
-              <button id="btnListExportExcel" class="btn btn-sm btn-secondary">?臬蝭拚 Excel</button>
-              <button id="btnListExportCsv" class="btn btn-sm btn-secondary">?臬蝭拚 CSV</button>
+              <button id="btnListExportExcel" class="btn btn-sm btn-secondary">匯出篩選 Excel</button>
+              <button id="btnListExportCsv" class="btn btn-sm btn-secondary">匯出篩選 CSV</button>
             </div>
           </div>
         </div>
@@ -297,9 +303,9 @@
         <div id="listContainer" class="account-list"></div>
 
         <div id="paginationBar" class="pagination-bar">
-          <button id="btnPagePrev" class="btn btn-ghost btn-sm">??銝???/button>
-          <span id="pageInfo" class="muted">蝚?1 / 1 ??/span>
-          <button id="btnPageNext" class="btn btn-ghost btn-sm">銝?????/button>
+          <button id="btnPagePrev" class="btn btn-ghost btn-sm">← 上一頁</button>
+          <span id="pageInfo" class="muted">第 1 / 1 頁</span>
+          <button id="btnPageNext" class="btn btn-ghost btn-sm">下一頁 →</button>
         </div>
       </section>
     </main>
@@ -308,4 +314,3 @@
   <script type="module" src="./app.js"></script>
 </body>
 </html>
-
